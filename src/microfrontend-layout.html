@@ -1,12 +1,13 @@
-<single-spa-router>
-  <!--
+<template id="single-spa-template">
+  <single-spa-router>
+    <!--
 
     This is the single-spa Layout Definition for your microfrontends.
     See https://single-spa.js.org/docs/layout-definition/ for more information.
 
   -->
 
-  <!-- Example layouts you might find helpful:
+    <!-- Example layouts you might find helpful:
 
   <nav>
     <application name="@org/navbar"></application>
@@ -16,17 +17,26 @@
   </route>
   -->
 
-  <!-- <application name="@mhcp/mflogin"></application> -->
 
-  <nav>
-    <application name="@mhcp/header"></application>
-  </nav>
-  <main>
-    <!-- <route path="/">
-      <application name="@mhcp/seg"></application>
-    </route>
+    <!-- <redirect from="/" to="/"></redirect> -->
     <route path="/">
-      <application name="@mhcp/adm"></application>
-    </route> -->
-  </main>
-</single-spa-router>
+      <application name="@mhcp/login"></application>
+    </route>
+
+    <nav>
+      <application name="@mhcp/header" props="authToken"></application>
+    </nav>
+    <main>
+      <route path="/">
+        <application name="@mhcp/adm"></application>
+      </route>
+      <route path="/">
+        <application name="@mhcp/seg"></application>
+      </route>
+      <route default>
+        <h1>404 Not Found</h1>
+      </route>
+    </main>
+    <application name="@mhcp/footer"></application>
+  </single-spa-router>
+</template>

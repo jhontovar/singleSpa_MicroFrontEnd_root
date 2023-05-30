@@ -17,7 +17,11 @@
     This CSP allows any SSL-enabled host and for arbitrary eval(), but you should limit these directives further to increase your app's security.
     Learn more about CSP policies at https://content-security-policy.com/#directive
   -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: localhost:*; script-src 'unsafe-inline' 'unsafe-eval' https: localhost:*; connect-src https: localhost:* ws://localhost:*; style-src 'unsafe-inline' https:; object-src 'none';">
+  <% if (isLocal) { %>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: localhost:*;  script-src 'unsafe-inline' 'unsafe-eval' https: localhost:*; connect-src https: localhost:* ws://localhost:*; style-src 'unsafe-inline' https:; object-src 'none';">
+  <% } else { %>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: asw4658:*;  script-src 'unsafe-inline' 'unsafe-eval' https: asw4658:*; connect-src https: asw4658:* ws://asw4658:*; style-src 'unsafe-inline' https:; object-src 'none';">
+  <% } %>
   <meta name="importmap-type" content="systemjs-importmap" />
   <!-- If you wish to turn off import-map-overrides for specific environments (prod), uncomment the line below -->
   <!-- More info at https://github.com/joeldenning/import-map-overrides/blob/master/docs/configuration.md#domain-list -->
@@ -49,12 +53,27 @@
       "imports": {
         "@mhcp/root-config": "//localhost:9000/mhcp-root-config.js",
         "@mhcp/header": "//localhost:4200/main.js",
-        "@mhcp/mflogin": "//localhost:4201/main.js",
+        "@mhcp/footer": "//localhost:4201/main.js",
         "@mhcp/seg": "//localhost:4202/main.js",
-        "@mhcp/adm": "//localhost:4203/main.js"
+        "@mhcp/adm": "//localhost:4203/main.js",
+        "@mhcp/login": "//localhost:4204/main.js"
       }
     }
   </script>
+  <% } else { %>
+    <script type="systemjs-importmap">
+      {
+        "imports": {
+          "@mhcp/root-config": "//asw4658:8082/mhcp-root-config.js",
+          "@mhcp/header": "//asw4658:8082/mhcpheader/main.js",
+          "@mhcp/footer": "//asw4658:8082/mhcpfooter/main.js",
+          "@mhcp/seg": "//asw4658:8082/mhcpseg/main.js",
+          "@mhcp/adm": "//asw4658:8082/mhcpadm/main.js",
+          "@mhcp/login": "//asw4658:8082/mhcplogin/main.js"
+        }
+      }
+    </script>
+
   <% } %>
 
   <!--
@@ -71,6 +90,29 @@
   <script src="https://cdn.jsdelivr.net/npm/systemjs@6.8.3/dist/system.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/systemjs@6.8.3/dist/extras/amd.min.js"></script>
   <% } %>
+
+  <template id="single-spa-template">
+    <single-spa-router mode="hash">
+      <nav>
+        <application name="@mhcp/header" props="authToken"></application>
+      </nav>
+      <main>
+        <route path="/login">
+          <application name="@mhcp/login"></application>
+        </route>
+        <route path="/adm">
+          <application name="@mhcp/adm" props="authToken"></application>
+        </route>
+        <route path="/seg">
+          <application name="@mhcp/seg" props="authToken"></application>
+        </route>
+        <application name="@mhcp/footer" props="authToken"></application>
+        <route default>
+          <h1>404 Not Found</h1>
+        </route>
+      </main>      
+    </single-spa-router>
+  </template>
 
 </head>
 <body>
