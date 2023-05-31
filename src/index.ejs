@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Root Config</title>
+  <title>MHCP</title>
 
   <!--
     Remove this if you only support browsers that support async/await.
@@ -51,8 +51,8 @@
   <script type="systemjs-importmap">
     {
       "imports": {
-        "@mhcp/root-config": "//localhost:9000/mhcp-root-config.js",
-        "@mhcp/header": "//localhost:4200/main.js",
+        "@mhcp/root-config": "//localhost:4200/mhcp-root-config.js",
+        "@mhcp/header": "//localhost:4205/main.js",
         "@mhcp/footer": "//localhost:4201/main.js",
         "@mhcp/seg": "//localhost:4202/main.js",
         "@mhcp/adm": "//localhost:4203/main.js",
@@ -92,25 +92,27 @@
   <% } %>
 
   <template id="single-spa-template">
-    <single-spa-router mode="hash">
-      <nav>
-        <application name="@mhcp/header" props="authToken"></application>
-      </nav>
-      <main>
-        <route path="/login">
-          <application name="@mhcp/login"></application>
-        </route>
-        <route path="/adm">
-          <application name="@mhcp/adm" props="authToken"></application>
-        </route>
-        <route path="/seg">
-          <application name="@mhcp/seg" props="authToken"></application>
-        </route>
-        <application name="@mhcp/footer" props="authToken"></application>
-        <route default>
-          <h1>404 Not Found</h1>
-        </route>
-      </main>      
+    <single-spa-router>
+
+      <route path="/login">
+        <application name="@mhcp/login"></application>
+      </route>
+
+      <route default>
+        <nav>
+          <application name="@mhcp/header" props="authToken"></application>
+        </nav>
+        <main>        
+          <route path="adm">
+            <application name="@mhcp/adm" props="authToken"></application>
+          </route>
+          <route path="seg">
+            <application name="@mhcp/seg" props="authToken"></application>
+          </route>
+          <application name="@mhcp/footer" props="authToken"></application>
+        </main>     
+      </route>
+      
     </single-spa-router>
   </template>
 

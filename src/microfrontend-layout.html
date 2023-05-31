@@ -1,42 +1,20 @@
-<template id="single-spa-template">
-  <single-spa-router>
-    <!--
+<single-spa-router mode="hash">
 
-    This is the single-spa Layout Definition for your microfrontends.
-    See https://single-spa.js.org/docs/layout-definition/ for more information.
-
-  -->
-
-    <!-- Example layouts you might find helpful:
+  <route path="/login">
+    <application name="@mhcp/login"></application>
+  </route>
 
   <nav>
-    <application name="@org/navbar"></application>
+    <application name="@mhcp/header"></application>
   </nav>
-  <route path="settings">
-    <application name="@org/settings"></application>
-  </route>
-  -->
-
-
-    <!-- <redirect from="/" to="/"></redirect> -->
-    <route path="/">
-      <application name="@mhcp/login"></application>
+  <main>
+    <route path="/adm">
+      <application name="@mhcp/adm"></application>
     </route>
-
-    <nav>
-      <application name="@mhcp/header" props="authToken"></application>
-    </nav>
-    <main>
-      <route path="/">
-        <application name="@mhcp/adm"></application>
-      </route>
-      <route path="/">
-        <application name="@mhcp/seg"></application>
-      </route>
-      <route default>
-        <h1>404 Not Found</h1>
-      </route>
-    </main>
+    <route path="/seg">
+      <application name="@mhcp/seg"></application>
+    </route>
     <application name="@mhcp/footer"></application>
-  </single-spa-router>
-</template>
+  </main>
+  
+</single-spa-router>

@@ -6,7 +6,6 @@ import {
 } from "single-spa-layout";
 import microfrontendLayout from "./microfrontend-layout.html";
 
-
 //const routes = constructRoutes(microfrontendLayout);
 
 const htmlTemplate = document.querySelector('#single-spa-template')
@@ -17,7 +16,6 @@ const layoutData = {
   loaders: {
   }
 };
-
 const routes = constructRoutes(htmlTemplate, layoutData)
 
 const applications = constructApplications({
