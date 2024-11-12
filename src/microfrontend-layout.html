@@ -1,20 +1,31 @@
 <single-spa-router mode="hash">
-
-  <route path="/login">
-    <application name="@mhcp/login"></application>
+  <route default>
+    <main class="mhcp-layaut">
+      <nav class="mhcp-header">
+        <application name="@mhcp/header" props="authToken,params"></application>
+      </nav>
+      <div class="mhcp-container">
+        <route default> </route>
+        <route path="prg">
+          <application name="@mhcp/prg"></application>
+        </route>
+        <route path="seg">
+          <application name="@mhcp/seg" props="authToken,params"></application>
+        </route>
+        <route path="adm">
+          <application name="@mhcp/adm"></application>
+        </route>
+        <route path="pac">
+          <application name="@mhcp/pac"></application>
+        </route>
+        <route path="apr">
+          <application name="@mhcp/apr"></application>
+        </route>
+      </div>
+      <footer class="mhcp-footer">
+        <mhcp-footer></mhcp-footer>
+      </footer>
+    </main>
   </route>
-
-  <nav>
-    <application name="@mhcp/header"></application>
-  </nav>
-  <main>
-    <route path="/adm">
-      <application name="@mhcp/adm"></application>
-    </route>
-    <route path="/seg">
-      <application name="@mhcp/seg"></application>
-    </route>
-    <application name="@mhcp/footer"></application>
-  </main>
-  
+  <!--   <redirect from="/" to="auth"></redirect> -->
 </single-spa-router>

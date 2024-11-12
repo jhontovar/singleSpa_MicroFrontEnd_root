@@ -4,8 +4,35 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>MHCP</title>
+  <link rel="icon" type="image/x-icon" href="__ICONO__">
+  <link
+  rel="stylesheet"
+  type="text/css"
+  href="https://front-lowenv.eastus.cloudapp.azure.com/dev/mhcptransv/styles.css"
+/>
+<link id="theme-css" rel="stylesheet" href="https://front-lowenv.eastus.cloudapp.azure.com/dev/mhcptransv/assets/theme/bootstrap4-light-blue/theme.css"/>
+<link id="theme-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/primeicons@6.0.1/primeicons.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 
+  <title>SIIF Clave Presupuestal</title>
+  
+  <% if (isLocal) { %>
+  <script src="http://localhost:4200/remoteEntry.js"></script> <!-- PRG -->
+  <script src="http://localhost:4201/remoteEntry.js"></script> <!-- HEADER-->
+  <!-- <script src="http://localhost:4202/remoteEntry.js"></script>  -->
+  <script src="http://localhost:4203/remoteEntry.js"></script> <!-- SEG -->
+  <script src="http://localhost:4204/remoteEntry.js"></script> <!-- ADM -->
+  <script src="http://localhost:4205/remoteEntry.js"></script> <!-- PAC -->
+  <script src="http://localhost:4206/remoteEntry.js"></script> <!-- APR -->
+  <% } else { %>
+    <script src="http://localhost:4200/remoteEntry.js"></script> <!-- PRG -->
+    <script src="http://localhost:4201/remoteEntry.js"></script> <!-- HEADER-->
+    <!-- <script src="http://localhost:4202/remoteEntry.js"></script>  -->
+    <script src="http://localhost:4203/remoteEntry.js"></script> <!-- SEG -->
+    <script src="http://localhost:4204/remoteEntry.js"></script> <!-- ADM -->
+    <script src="http://localhost:4205/remoteEntry.js"></script> <!-- PAC -->
+    <script src="http://localhost:4206/remoteEntry.js"></script> <!-- APR -->
+  <% } %>
   <!--
     Remove this if you only support browsers that support async/await.
     This is needed by babel to share largeish helper code for compiling async/await in older
@@ -17,11 +44,7 @@
     This CSP allows any SSL-enabled host and for arbitrary eval(), but you should limit these directives further to increase your app's security.
     Learn more about CSP policies at https://content-security-policy.com/#directive
   -->
-  <% if (isLocal) { %>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: localhost:*;  script-src 'unsafe-inline' 'unsafe-eval' https: localhost:*; connect-src https: localhost:* ws://localhost:*; style-src 'unsafe-inline' https:; object-src 'none';">
-  <% } else { %>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: asw4658:*;  script-src 'unsafe-inline' 'unsafe-eval' https: asw4658:*; connect-src https: asw4658:* ws://asw4658:*; style-src 'unsafe-inline' https:; object-src 'none';">
-  <% } %>
+  <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: localhost:*; script-src 'unsafe-inline' 'unsafe-eval' https: localhost:*; connect-src https: localhost:* ws://localhost:*; style-src 'unsafe-inline' https:; object-src 'none';"> -->
   <meta name="importmap-type" content="systemjs-importmap" />
   <!-- If you wish to turn off import-map-overrides for specific environments (prod), uncomment the line below -->
   <!-- More info at https://github.com/joeldenning/import-map-overrides/blob/master/docs/configuration.md#domain-list -->
@@ -47,35 +70,6 @@
   <!-- Add your organization's prod import map URL to this script's src  -->
   <!-- <script type="systemjs-importmap" src="/importmap.json"></script> -->
 
-  <% if (isLocal) { %>
-  <script type="systemjs-importmap">
-    {
-      "imports": {
-        "@mhcp/root-config": "//localhost:4200/mhcp-root-config.js",
-        "@mhcp/header": "//localhost:4205/main.js",
-        "@mhcp/footer": "//localhost:4201/main.js",
-        "@mhcp/seg": "//localhost:4202/main.js",
-        "@mhcp/adm": "//localhost:4203/main.js",
-        "@mhcp/login": "//localhost:4204/main.js"
-      }
-    }
-  </script>
-  <% } else { %>
-    <script type="systemjs-importmap">
-      {
-        "imports": {
-          "@mhcp/root-config": "//asw4658:8082/mhcp-root-config.js",
-          "@mhcp/header": "//asw4658:8082/mhcpheader/main.js",
-          "@mhcp/footer": "//asw4658:8082/mhcpfooter/main.js",
-          "@mhcp/seg": "//asw4658:8082/mhcpseg/main.js",
-          "@mhcp/adm": "//asw4658:8082/mhcpadm/main.js",
-          "@mhcp/login": "//asw4658:8082/mhcplogin/main.js"
-        }
-      }
-    </script>
-
-  <% } %>
-
   <!--
     If you need to support Angular applications, uncomment the script tag below to ensure only one instance of ZoneJS is loaded
     Learn more about why at https://single-spa.js.org/docs/ecosystem-angular/#zonejs
@@ -91,39 +85,21 @@
   <script src="https://cdn.jsdelivr.net/npm/systemjs@6.8.3/dist/extras/amd.min.js"></script>
   <% } %>
 
-  <template id="single-spa-template">
-    <single-spa-router>
-
-      <route path="/login">
-        <application name="@mhcp/login"></application>
-      </route>
-
-      <route default>
-        <nav>
-          <application name="@mhcp/header" props="authToken"></application>
-        </nav>
-        <main>        
-          <route path="adm">
-            <application name="@mhcp/adm" props="authToken"></application>
-          </route>
-          <route path="seg">
-            <application name="@mhcp/seg" props="authToken"></application>
-          </route>
-          <application name="@mhcp/footer" props="authToken"></application>
-        </main>     
-      </route>
-      
-    </single-spa-router>
-  </template>
+  <% if (isLocal) { %>
+      <script src="mhcp-root-config.js"></script>
+  <% } else { %>
+    <script src="mhcp-root-config.js"></script>
+  <% } %>
 
 </head>
 <body>
   <noscript>
     You need to enable JavaScript to run this app.
   </noscript>
-  <script>
+<!--   <script>
     System.import('@mhcp/root-config');
-  </script>
+  </script> -->
+  <script src="http://localhost/mhcptransv/components.js"></script>
   <import-map-overrides-full show-when-local-storage="devtools" dev-libs></import-map-overrides-full>
 </body>
 </html>
